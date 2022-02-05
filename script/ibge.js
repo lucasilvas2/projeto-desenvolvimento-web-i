@@ -45,7 +45,7 @@ function printConsole(value){
         add_option.value = trem[i];
         add_option.innerHTML = trem[i];
         dataList.appendChild(add_option);
-        console.log(trem[i]);
+        // console.log(trem[i]);
     }
     // console.log(listaJson);
 }

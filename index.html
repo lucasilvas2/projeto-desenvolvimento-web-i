@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="./css/style.css">
     <title>Document</title>
 </head>
-<body>
+<body onload="requisicaoJson()">
     
-    <input type="search" placeholder="Escolha o país" list="lista_paises" autocomplete="country-name" aria-label="on">
+    <input type="search" placeholder="Escolha o país" list="lista_paises" >
 
     <datalist id="lista_paises">
     </datalist>
-    <input type="button" value="Teste" onclick="requisicaoJson()">
+    <input type="button" value="Teste" >
 
     <script src="./script/ibge.js"></script>
 </body>
