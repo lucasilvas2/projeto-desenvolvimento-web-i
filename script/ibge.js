@@ -10,10 +10,10 @@ function xhttpAssincrono(callBackFunction, type, value) {
     var url = "https://servicodados.ibge.gov.br/api/v1/paises/";
     switch (type) {
         case 1:
-            url += ""
+            url
             break;
         case 2:
-            url += "BR";
+            url += "BR/";
             break;
         // case 3:
         //     url += "todos?userId=" + value;
