@@ -30,7 +30,7 @@ function requisicaoJson(){
     xhttpAssincrono(printConsole,1,)
 }
 var listaJson;
-var dataList = document.getElementById('lista_paises')
+var dataList = document.getElementById('listaPaises')
 var add_option;
 var trem = [];
 function printConsole(value){
@@ -49,3 +49,8 @@ function printConsole(value){
     }
     // console.log(listaJson);
 }
+
+$(".menu").change(function(){
+    console.log('oi');
+});
+
