@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="./css/style.css">
     <title>Analise seu País</title>
 </head>
-<body onload="requisicaoJson()">
+<body onload="loadOptionsJson()">
     
     <nav class="navbar navbar-expand-lg" style="background-color: aquamarine;">
-        <div class="container-fluid">
-            <div class="logoSite">
+        <div class="container">
+            <div class="logoSite col-md-3">
                 <p>Analise seu País</p>
             </div>
-            <div class="menu row">
+            <form id="menu" class="menu row col-md-9">
                 <div class="radio-option col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="opcao_escolhida" id="opcao1" value="opcao1" checked>
@@ -29,14 +29,17 @@
                     </div>
                 </div>
                 <div class="entradaPais col-md-6">
-                    <input list="listaPaises" placeholder="Ex: Brasil" class="col-sm-5 custom-select custom-select-sm esolhaPais">
+                    <input type="select" list="listaPaises" placeholder="Ex: Brasil" name="escolhaPais1" id="escolhaPais1" class="col-sm-5 custom-select custom-select-sm escolhaPais1">
                     <datalist id="listaPaises">
                     </datalist>
-                    <button class="btn btn-outline-success btn-dark buscar" type="submit">Buscar</button>
+                    <button type="button" id="buscar"
+                    class="col-sm-2">Buscar</button>
+                    <input type="select" list="listaPaises" placeholder="Ex: Alemanha" name="escolhaPais2" id="escolhaPais2" class="col-sm-5 custom-select custom-select-sm escolhaPais2" style="display: none;">
+                    <!-- <button class="btn btn-outline-success btn-dark buscar" type="submit">Buscar</button> -->
                 </div>
                 
                 <div class="about col-md-3"> Sobre o site</div>
-            </div>           
+            </form>           
         </div>
     </nav>
 

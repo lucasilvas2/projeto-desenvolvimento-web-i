@@ -1,4 +1,4 @@
-function xhttpAssincrono(callBackFunction, type, value) {
+function xhttpAssincrono(callBackFunction, type, value1, value2) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200) {
@@ -13,14 +13,17 @@ function xhttpAssincrono(callBackFunction, type, value) {
             url
             break;
         case 2:
-            url += value;
+            url += value1 + "/indicadores";
+            break;
+        case 3:
+            url += value1 + "|" + value2 + "/indicadores/";
             break;
     }
     xhttp.open("GET", url, true);
     xhttp.send();
 }
 
-function requisicaoJson(){
+function loadOptionsJson(){
     xhttpAssincrono(carregandoOpcaoPaises,1,)
 }
 var listaJson;
@@ -46,14 +49,13 @@ function carregandoOpcaoPaises(value){
 }
 
 
-
 function pais(codeAlpha2, nomeAbreviado){
     this.codeAlpha2 = codeAlpha2;
     this.nomeAbreviado = nomeAbreviado;
 }
 
 function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
-    let codeAlpha2Encontrado;
+    let codeAlpha2Encontrado = null;
     listaPaises.forEach(pais => {
         if (nomeAbreviado == pais.nomeAbreviado) {
             codeAlpha2Encontrado = pais.codeAlpha2;
@@ -62,18 +64,67 @@ function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
     return codeAlpha2Encontrado;
 }
 
-$(".buscar").click(function(){
-    buscar();
+$("#buscar").click(function(){
+    buscarDados();
 });
-var opcaoEscolhida
-function buscar(){
-    opcaoEscolhida = document.getElementsByClassName('opcao_escolhida')
-    paisEscolhido = document.getElementsByClassName('escolhaPais')
 
-    printConsole(opcaoEscolhida, paisEscolhido);
+$(".radio-option").change(function(){
+        var opcaoEscolhida = document.getElementsByName('opcao_escolhida');
+        var inputDisplaySegundoPais = document.getElementById('escolhaPais2')
+        if (opcaoEscolhida[0].checked == true) {        
+            inputDisplaySegundoPais.style.display = 'none'     
+        }
+        else{
+            inputDisplaySegundoPais.style.display = 'inline' 
+        }
+        
+    }
+);
+
+
+function buscarDados(){
+    var opcaoEscolhida;
+    var paisEscolhido1;
+    opcaoEscolhida = document.getElementsByName('opcao_escolhida');
+    paisEscolhido1 = document.getElementById('escolhaPais1');
+    paisEscolhido2 = document.getElementById('escolhaPais2');
+    var codePais1;
+    var codePais2;
+    var controle;
+    if (opcaoEscolhida[0].checked == true) {
+        printConsole(  paisEscolhido1.value);
+        codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value)
+        controle = 1;
+        xhttpAssincrono(printConsole, 2, codePais1);
+    }
+    else{
+        
+        codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value);
+        codePais2 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido2.value);
+        printConsole(  paisEscolhido1.value, paisEscolhido2.value);
+        printConsole(  codePais1, codePais2);
+        controle = 2;
+        xhttpAssincrono(printConsole, 3, codePais1, codePais2);
+    }
+    alertaEscolha(controle, paisEscolhido1.value, paisEscolhido2.value);
 
 }
 
-function printConsole(value){
-    console.log(value);
+function alertaEscolha(controle, pais1, pais2){
+    if (controle == 1) {
+        if (pais1 == "") {
+            window.alert("Preencha todos os campos!");
+        }
+    } else {
+        if (pais1 == ""|| pais2 == "" || pais1 == "" && pais2 == "") {
+            window.alert("Preencha todos os campos!");
+        }
+    }
+}
+function printConsole(value1){
+    console.log(value1);
+}
+
+function printConsole(value1, value2){
+    console.log(value1 + " - " + value2);
 }
