@@ -13,44 +13,67 @@ function xhttpAssincrono(callBackFunction, type, value) {
             url
             break;
         case 2:
-            url += "BR/";
+            url += value;
             break;
-        // case 3:
-        //     url += "todos?userId=" + value;
-        //     break;
-        // case 4:
-        //     url += "comments?postId=" + value;
-        //     break;
     }
     xhttp.open("GET", url, true);
     xhttp.send();
 }
 
 function requisicaoJson(){
-    xhttpAssincrono(printConsole,1,)
+    xhttpAssincrono(carregandoOpcaoPaises,1,)
 }
 var listaJson;
-var dataList = document.getElementById('listaPaises')
-var add_option;
-var trem = [];
-function printConsole(value){
+var listaPaises = [];
+function carregandoOpcaoPaises(value){
+    
+    var dataList = document.getElementById('listaPaises')
+    var add_option;
+    
     listaJson = JSON.parse(value);
-    for (let i = 0; i < listaJson.length; i++) {    
-        var nome = listaJson[i].nome["abreviado"];
-        trem.push(nome);
+    for (let i = 0; i < listaJson.length; i++) {
+        var codeAlpha2 = listaJson[i].id["ISO-3166-1-ALPHA-2"]
+        var nomeAbreviado = listaJson[i].nome["abreviado"];
+        listaPaises.push(new pais(codeAlpha2, nomeAbreviado));
     }
-    trem.sort();
-    for (let i = 0; i < trem.length; i++) {
+    //listaPaises.sort();
+    for (let i = 0; i < listaPaises.length; i++) {
         add_option = new Option
-        add_option.value = trem[i];
-        add_option.innerHTML = trem[i];
+        add_option.value = listaPaises[i].nomeAbreviado;
+        add_option.innerHTML = listaPaises[i].nomeAbreviado;
         dataList.appendChild(add_option);
-        // console.log(trem[i]);
     }
-    // console.log(listaJson);
 }
 
-$(".menu").change(function(){
-    console.log('oi');
-});
 
+
+function pais(codeAlpha2, nomeAbreviado){
+    this.codeAlpha2 = codeAlpha2;
+    this.nomeAbreviado = nomeAbreviado;
+}
+
+function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
+    let codeAlpha2Encontrado;
+    listaPaises.forEach(pais => {
+        if (nomeAbreviado == pais.nomeAbreviado) {
+            codeAlpha2Encontrado = pais.codeAlpha2;
+        }        
+    });
+    return codeAlpha2Encontrado;
+}
+
+$(".buscar").click(function(){
+    buscar();
+});
+var opcaoEscolhida
+function buscar(){
+    opcaoEscolhida = document.getElementsByClassName('opcao_escolhida')
+    paisEscolhido = document.getElementsByClassName('escolhaPais')
+
+    printConsole(opcaoEscolhida, paisEscolhido);
+
+}
+
+function printConsole(value){
+    console.log(value);
+}
