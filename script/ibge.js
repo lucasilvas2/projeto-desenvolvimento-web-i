@@ -134,17 +134,28 @@ var infoPais
 function mostrarInformacaoPais(value){
     infoPais = JSON.parse(value);
     var resultado = document.getElementById('resultado');
-
+    verificaSeTemResultadoNatela();
     if(controle == 1){
         printConsole(infoPais);
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
+        
     }
     else if(controle == 2){
+        resultado.insertAdjacentHTML('beforeend', `<div class="d-flex justify-content-center" id="info_pais">  </div>`);
+        var infoDiv1 = document.getElementById('info_pais');
+        var infoDiv2 = document.getElementById('info_pais');
+        infoDiv1.insertAdjacentHTML('beforeend',`<div class="me-5" id = "info_pais1"> <h1>`+ infoPais[1].nome['abreviado'] + ` ` + infoPais[1].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[1].area['total'] + ` Km² | Continente: `+ infoPais[1].localizacao.regiao.nome + ` | Capital: ` + infoPais[1].governo.capital.nome +` </p> </div>` );
+        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         printConsole(infoPais);
     }
 }
 
-
+function verificaSeTemResultadoNatela(){
+    let x = document.getElementById('info_pais');
+    if(x != null ){
+        x.remove();
+    }
+}
 
 function alertaEscolha(controle, pais1, pais2){
     if (controle == 1) {
