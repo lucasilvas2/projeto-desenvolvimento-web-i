@@ -92,7 +92,11 @@ $(".radio-option").change(function(){
 
 
 var controle;
-
+function cacheInfo(v_controle, pais1, code1){
+    this.v_controle = v_controle;
+    this.pais1 = pais1;
+    this.code1 = code1;
+}
 function buscarDados(){
     var opcaoEscolhida;
     var paisEscolhido1;
@@ -133,8 +137,7 @@ function mostrarInformacaoPais(value){
 
     if(controle == 1){
         printConsole(infoPais);
-        div = document.createElement('div')
-        
+        resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
     }
     else if(controle == 2){
         printConsole(infoPais);
@@ -157,8 +160,3 @@ function alertaEscolha(controle, pais1, pais2){
 function printConsole(value1){
     console.log(value1);
 }
-
-
-// function printConsole(value1, value2){
-//     console.log(value1 + " - " + value2);
-// }
