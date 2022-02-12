@@ -13,16 +13,25 @@ function xhttpAssincrono(callBackFunction, type, value1, value2) {
             url
             break;
         case 2:
-            url += value1 + "/indicadores";
+            url += value1
             break;
         case 3:
-            url += value1 + "|" + value2 + "/indicadores/";
+            url += value1 + "|" + value2
+            break;      
+        case 4:
+            url += value1 + "/indicadores/77827|77819|77821|77835|77836";
+            break;
+        case 5:
+            url += value1 + "|" + value2 + "/indicadores/77827|77819|77821|77835|77836";
             break;
     }
     xhttp.open("GET", url, true);
     xhttp.send();
 }
-
+//77819- Economia - Gastos públicos com educação
+//77821- Economia - Investimentos em pesquisa e desenvolvimento
+//77835- Indicadores sociais - Taxa bruta de matrículas para todos os níveis de ensino
+//77836- Indicadores sociais - Taxa de alfabetização das pessoas de 15 anos ou mais de idade
 function loadOptionsJson(){
     xhttpAssincrono(carregandoOpcaoPaises,1,)
 }
@@ -82,6 +91,8 @@ $(".radio-option").change(function(){
 );
 
 
+var controle;
+
 function buscarDados(){
     var opcaoEscolhida;
     var paisEscolhido1;
@@ -90,25 +101,47 @@ function buscarDados(){
     paisEscolhido2 = document.getElementById('escolhaPais2');
     var codePais1;
     var codePais2;
-    var controle;
+    
+    
     if (opcaoEscolhida[0].checked == true) {
-        printConsole(  paisEscolhido1.value);
+        //printConsole(paisEscolhido1.value);
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value)
         controle = 1;
-        xhttpAssincrono(printConsole, 2, codePais1);
+        xhttpAssincrono(mostrarInformacaoPais, 2, codePais1); 
+        printConsole(controle) ;
     }
-    else{
+    else if (opcaoEscolhida[1].checked == true){
         
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value);
         codePais2 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido2.value);
-        printConsole(  paisEscolhido1.value, paisEscolhido2.value);
-        printConsole(  codePais1, codePais2);
+        //printConsole(  paisEscolhido1.value, paisEscolhido2.value);
+       // printConsole(  codePais1, codePais2);
         controle = 2;
-        xhttpAssincrono(printConsole, 3, codePais1, codePais2);
+        xhttpAssincrono(mostrarInformacaoPais, 3, codePais1, codePais2);
+        printConsole(controle) ;
+
     }
     alertaEscolha(controle, paisEscolhido1.value, paisEscolhido2.value);
-
 }
+function retornaInformacaoPaisJson(value){
+    return JSON.parse(value);
+}
+var infoPais
+function mostrarInformacaoPais(value){
+    infoPais = JSON.parse(value);
+    var resultado = document.getElementById('resultado');
+
+    if(controle == 1){
+        printConsole(infoPais);
+        div = document.createElement('div')
+        
+    }
+    else if(controle == 2){
+        printConsole(infoPais);
+    }
+}
+
+
 
 function alertaEscolha(controle, pais1, pais2){
     if (controle == 1) {
@@ -116,7 +149,7 @@ function alertaEscolha(controle, pais1, pais2){
             window.alert("Preencha todos os campos!");
         }
     } else {
-        if (pais1 == ""|| pais2 == "" || pais1 == "" && pais2 == "") {
+        if (pais1 == "" || pais2 == "" || pais1 == "" && pais2 == "") {
             window.alert("Preencha todos os campos!");
         }
     }
@@ -125,6 +158,7 @@ function printConsole(value1){
     console.log(value1);
 }
 
-function printConsole(value1, value2){
-    console.log(value1 + " - " + value2);
-}
+
+// function printConsole(value1, value2){
+//     console.log(value1 + " - " + value2);
+// }
