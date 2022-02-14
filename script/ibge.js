@@ -1,3 +1,5 @@
+//https://imsea.herokuapp.com/api/1?q=
+//api para buscar bandeira dos paises
 function xhttpAssincrono(callBackFunction, type, value1, value2) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -19,15 +21,16 @@ function xhttpAssincrono(callBackFunction, type, value1, value2) {
             url += value1 + "|" + value2
             break;      
         case 4:
-            url += value1 + "/indicadores/77827|77819|77821|77835|77836";
+            url += value1 + "/indicadores/77827|77819|77821";
             break;
         case 5:
-            url += value1 + "|" + value2 + "/indicadores/77827|77819|77821|77835|77836";
+            url += value1 + "|" + value2 + "/indicadores/77827|77819|77821";
             break;
     }
     xhttp.open("GET", url, true);
     xhttp.send();
 }
+//77827 - Economia - Total do PIB
 //77819- Economia - Gastos públicos com educação
 //77821- Economia - Investimentos em pesquisa e desenvolvimento
 //77835- Indicadores sociais - Taxa bruta de matrículas para todos os níveis de ensino
@@ -108,52 +111,48 @@ function buscarDados(){
     
     
     if (opcaoEscolhida[0].checked == true) {
-        //printConsole(paisEscolhido1.value);
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value)
         controle = 1;
         xhttpAssincrono(mostrarInformacaoPais, 2, codePais1); 
-        printConsole(controle) ;
+        xhttpAssincrono(dadosGrafico, 4, codePais1); 
     }
     else if (opcaoEscolhida[1].checked == true){
         
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value);
         codePais2 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido2.value);
-        //printConsole(  paisEscolhido1.value, paisEscolhido2.value);
-       // printConsole(  codePais1, codePais2);
         controle = 2;
         xhttpAssincrono(mostrarInformacaoPais, 3, codePais1, codePais2);
-        printConsole(controle) ;
+        
 
     }
     alertaEscolha(controle, paisEscolhido1.value, paisEscolhido2.value);
 }
-function retornaInformacaoPaisJson(value){
-    return JSON.parse(value);
-}
+
 var infoPais
 function mostrarInformacaoPais(value){
     infoPais = JSON.parse(value);
     var resultado = document.getElementById('resultado');
     verificaSeTemResultadoNatela();
     if(controle == 1){
-        printConsole(infoPais);
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
-        
+        resultado.insertAdjacentHTML('beforeend', `<div id="grafico" class="" style="width: 900px; height: 500px;"> Gráfico </div>`)
+        google.charts.setOnLoadCallback(drawVisualization);    
     }
     else if(controle == 2){
         resultado.insertAdjacentHTML('beforeend', `<div class="d-flex justify-content-center" id="info_pais">  </div>`);
         var infoDiv1 = document.getElementById('info_pais');
         var infoDiv2 = document.getElementById('info_pais');
         infoDiv1.insertAdjacentHTML('beforeend',`<div class="me-5" id = "info_pais1"> <h1>`+ infoPais[1].nome['abreviado'] + ` ` + infoPais[1].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[1].area['total'] + ` Km² | Continente: `+ infoPais[1].localizacao.regiao.nome + ` | Capital: ` + infoPais[1].governo.capital.nome +` </p> </div>` );
-        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
-        printConsole(infoPais);
+        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);       
     }
 }
 
 function verificaSeTemResultadoNatela(){
     let x = document.getElementById('info_pais');
+    let y = document.getElementById('grafico')
     if(x != null ){
         x.remove();
+        y.remove();
     }
 }
 
@@ -168,6 +167,35 @@ function alertaEscolha(controle, pais1, pais2){
         }
     }
 }
+var dadosTabela = [];
+var dados;
+function dadosGrafico(value){
+    dados = JSON.parse(value);
+}
+
 function printConsole(value1){
     console.log(value1);
 }
+
+function drawVisualization() {
+    // Some raw data (not necessarily accurate)
+    var data = google.visualization.arrayToDataTable([
+      ['Month', 'Bolivia', 'Equador'],
+      ['2004/05',  165,      938],
+      ['2005/06',  135,      1120],
+      ['2006/07',  157,      1167],
+      ['2007/08',  139,      1110],
+      ['2008/09',  136,      691]
+    ]);
+
+    var options = {
+      title : 'PIB',
+      vAxis: {title: 'US$'},
+      hAxis: {title: 'Anos'},
+      seriesType: 'bars',
+      series: {2: {type: 'line'}},
+    };
+
+    var chart = new google.visualization.ComboChart(document.getElementById('grafico'));
+    chart.draw(data, options);
+  }
