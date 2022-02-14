@@ -114,8 +114,9 @@ function buscarDados(){
     if (opcaoEscolhida[0].checked == true) {
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value)
         controle = 1;
-        xhttpAssincrono(mostrarInformacaoPais, 2, codePais1); 
         xhttpAssincrono(dadosGrafico, 4, codePais1); 
+        xhttpAssincrono(mostrarInformacaoPais, 2, codePais1);  
+        
     }
     else if (opcaoEscolhida[1].checked == true){
         
@@ -135,7 +136,9 @@ function mostrarInformacaoPais(value){
     if(controle == 1){
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         resultado.insertAdjacentHTML('beforeend', `<div id="grafico" class="" style="width: 900px; height: 1200px;"> Gráfico </div>`)
-        google.charts.setOnLoadCallback(drawVisualization);    
+        
+        google.charts.setOnLoadCallback(drawVisualization);
+           
     }
     else if(controle == 2){
         resultado.insertAdjacentHTML('beforeend', `<div class="d-flex justify-content-center" id="info_pais">  </div>`);
@@ -167,26 +170,50 @@ function alertaEscolha(controle, pais1, pais2){
     }
 }
 
-var dados;
-var xDado;
+var dadosJSON;
+var dadosLista = [];
 function dadosGrafico(value){
-    dados = JSON.parse(value);
-    xDado = parseFloat(dados[0].series[0].serie[3][1995]);
+    dadosJSON = JSON.parse(value);
+    dadosLista[0] = parseFloat(dadosJSON[0].series[0].serie[1][1990]);
+    dadosLista[1] = parseFloat(dadosJSON[0].series[0].serie[3][1995]);
+    dadosLista[2] = parseFloat(dadosJSON[0].series[0].serie[6][2000]);
+    dadosLista[3] = parseFloat(dadosJSON[0].series[0].serie[9][2001]);
+    dadosLista[4] = parseFloat(dadosJSON[0].series[0].serie[11][2002]);
+    dadosLista[5] = parseFloat(dadosJSON[0].series[0].serie[15][2004]);
+    dadosLista[6] = parseFloat(dadosJSON[0].series[0].serie[17][2005]);
+    dadosLista[7] = parseFloat(dadosJSON[0].series[0].serie[20][2006]);
+    dadosLista[8] = parseFloat(dadosJSON[0].series[0].serie[22][2007]);
+    dadosLista[9] = parseFloat(dadosJSON[0].series[0].serie[24][2008]);
+    dadosLista[10] = parseFloat(dadosJSON[0].series[0].serie[26][2009]);
+    dadosLista[11] = parseFloat(dadosJSON[0].series[0].serie[28][2010]);
+    dadosLista[12] = parseFloat(dadosJSON[0].series[0].serie[31][2011]);
+    dadosLista[13] = parseFloat(dadosJSON[0].series[0].serie[33][2012]);
+    dadosLista[14] = parseFloat(dadosJSON[0].series[0].serie[35][2013]);
+    dadosLista[15] = parseFloat(dadosJSON[0].series[0].serie[37][2014]);
+    dadosLista[16] = parseFloat(dadosJSON[0].series[0].serie[39][2015]);
+    dadosLista[17] = parseFloat(dadosJSON[0].series[0].serie[42][2016]);
+    dadosLista[18] = parseFloat(dadosJSON[0].series[0].serie[44][2017]);
+    dadosLista[19] = parseFloat(dadosJSON[0].series[0].serie[46][2018]);
+    dadosLista[20] = parseFloat(dadosJSON[0].series[0].serie[47][2019]);
+    dadosLista[21] = parseFloat(dadosJSON[0].series[0].serie[48][2020]);
+
 }
+
 
 function printConsole(value1){
     console.log(value1);
 }
 
 function drawVisualization() {
+    
     // Some raw data (not necessarily accurate)
     var data = google.visualization.arrayToDataTable([
       ['Ano', paisEscolhido1.value],
-      ['1995',  xDado],
-      ['1995',  135],
-      ['2000',  157],
-      ['2001',  139],
-      ['2005',  139]
+      ['1990', 0],
+      ['1995', dadosLista[1]],
+      ['2000', dadosLista[2]],
+      ['2001', dadosLista[3]],
+      ['2002', dadosLista[4]]
     ]);
 
     var options = {
