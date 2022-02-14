@@ -100,9 +100,10 @@ function cacheInfo(v_controle, pais1, code1){
     this.pais1 = pais1;
     this.code1 = code1;
 }
+var paisEscolhido1;
 function buscarDados(){
     var opcaoEscolhida;
-    var paisEscolhido1;
+    
     opcaoEscolhida = document.getElementsByName('opcao_escolhida');
     paisEscolhido1 = document.getElementById('escolhaPais1');
     paisEscolhido2 = document.getElementById('escolhaPais2');
@@ -121,9 +122,7 @@ function buscarDados(){
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value);
         codePais2 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido2.value);
         controle = 2;
-        xhttpAssincrono(mostrarInformacaoPais, 3, codePais1, codePais2);
-        
-
+        xhttpAssincrono(mostrarInformacaoPais, 3, codePais1, codePais2);        
     }
     alertaEscolha(controle, paisEscolhido1.value, paisEscolhido2.value);
 }
@@ -135,7 +134,7 @@ function mostrarInformacaoPais(value){
     verificaSeTemResultadoNatela();
     if(controle == 1){
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
-        resultado.insertAdjacentHTML('beforeend', `<div id="grafico" class="" style="width: 900px; height: 500px;"> Gráfico </div>`)
+        resultado.insertAdjacentHTML('beforeend', `<div id="grafico" class="" style="width: 900px; height: 1200px;"> Gráfico </div>`)
         google.charts.setOnLoadCallback(drawVisualization);    
     }
     else if(controle == 2){
@@ -167,10 +166,12 @@ function alertaEscolha(controle, pais1, pais2){
         }
     }
 }
-var dadosTabela = [];
+
 var dados;
+var xDado;
 function dadosGrafico(value){
     dados = JSON.parse(value);
+    xDado = parseFloat(dados[0].series[0].serie[3][1995]);
 }
 
 function printConsole(value1){
@@ -180,12 +181,12 @@ function printConsole(value1){
 function drawVisualization() {
     // Some raw data (not necessarily accurate)
     var data = google.visualization.arrayToDataTable([
-      ['Month', 'Bolivia', 'Equador'],
-      ['2004/05',  165,      938],
-      ['2005/06',  135,      1120],
-      ['2006/07',  157,      1167],
-      ['2007/08',  139,      1110],
-      ['2008/09',  136,      691]
+      ['Ano', paisEscolhido1.value],
+      ['1995',  xDado],
+      ['1995',  135],
+      ['2000',  157],
+      ['2001',  139],
+      ['2005',  139]
     ]);
 
     var options = {
@@ -199,3 +200,4 @@ function drawVisualization() {
     var chart = new google.visualization.ComboChart(document.getElementById('grafico'));
     chart.draw(data, options);
   }
+
