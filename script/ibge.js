@@ -126,6 +126,7 @@ function buscarDados(){
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value);
         codePais2 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido2.value);
         controle = 2;
+        xhttpAssincrono(dadosGrafico, 5, codePais1, codePais2);
         xhttpAssincrono(mostrarInformacaoPais, 3, codePais1, codePais2);        
     }
     
@@ -143,11 +144,11 @@ function mostrarInformacaoPais(value){
     if(controle == 1){
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="" style="width: 900px; height: 1200px;"> Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico" > Gráfico </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="" style="width: 900px; height: 1200px;"> Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico" > Gráfico </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="" style="width: 900px; height: 1200px;"> Gráfico </div>');       
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico" > Gráfico </div>');       
     }
     else if(controle == 2){
         resultado.insertAdjacentHTML('beforeend', `<div class="d-flex justify-content-center" id="info_pais">  </div>`);
@@ -156,12 +157,25 @@ function mostrarInformacaoPais(value){
         
         infoDiv1.insertAdjacentHTML('beforeend',`<div class="me-5" id = "info_pais1"> <h1>`+ infoPais[1].nome['abreviado'] + ` ` + infoPais[1].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[1].area['total'] + ` Km² | Continente: `+ infoPais[1].localizacao.regiao.nome + ` | Capital: ` + infoPais[1].governo.capital.nome +` </p> </div>` );
 
-        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);       
+        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
+        
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico" > Gráfico </div>');
+
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico" > Gráfico </div>');
+
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico" > Gráfico </div>');  
+    }
+    if(dadosJSON[0].series.length != 0 ){
+        google.charts.setOnLoadCallback(drawVisualizationGastosComEducacao);
+    }
+    if(dadosJSON[1].series.length != 0 ){
+        google.charts.setOnLoadCallback(drawVisualizationIPD);
+    }
+    if(dadosJSON[2].series.length != 0 ){
+        google.charts.setOnLoadCallback(drawVisualizationPIB);
     }
     
-    google.charts.setOnLoadCallback(drawVisualizationGastosComEducacao);
-    google.charts.setOnLoadCallback(drawVisualizationIPD);
-    google.charts.setOnLoadCallback(drawVisualizationPIB);
+    
   
 }
 
@@ -255,6 +269,7 @@ function drawVisualizationGastosComEducacao() {
       hAxis: {title: 'Anos'},
       seriesType: 'bars',
       series: {2: {type: 'line'}},
+
     };
 
     var chart = new google.visualization.ComboChart(document.getElementById('graficoGastosComEducacao'));
@@ -278,6 +293,7 @@ function drawVisualizationIPD(){
         hAxis: {title: 'Anos'},
         seriesType: 'bars',
         series: {2: {type: 'line'}},
+
       };
   
       var chart = new google.visualization.ComboChart(document.getElementById('graficoInvestimentosemPesquisaeDesenvolvimento'));
@@ -301,6 +317,7 @@ function drawVisualizationPIB(){
         hAxis: {title: 'Anos'},
         seriesType: 'bars',
         series: {6: {type: 'line'}},
+
       };
   
       var chart = new google.visualization.ComboChart(document.getElementById('graficoTotaldoPib'));

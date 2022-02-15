@@ -1,0 +1,11 @@
+.grafico {
+    width: 900px;
+    height: 1200px;
+}
+
+@media (max-width: 500px){
+    .grafico {
+        width: 375px;
+        height: 500px;
+    }
+}
