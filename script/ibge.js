@@ -63,8 +63,7 @@ function carregandoOpcaoPaises(value){
 
 function pais(codeAlpha2, nomeAbreviado){
     this.codeAlpha2 = codeAlpha2;
-    this.nomeAbreviado = nomeAbreviado;
-    
+    this.nomeAbreviado = nomeAbreviado;  
 }
 
 function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
@@ -144,11 +143,11 @@ function mostrarInformacaoPais(value){
     if(controle == 1){
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > Gráfico </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > Gráfico </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico" > Gráfico </div>');       
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > Gráfico </div>');       
     }
     else if(controle == 2){
         resultado.insertAdjacentHTML('beforeend', `<div class="d-flex justify-content-center" id="info_pais">  </div>`);
@@ -159,11 +158,11 @@ function mostrarInformacaoPais(value){
 
         infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > Gráfico </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > Gráfico </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico" > Gráfico </div>');  
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > Gráfico </div>');  
     }
     if(dadosJSON[0].series.length != 0 ){
         google.charts.setOnLoadCallback(drawVisualizationGastosComEducacao);
@@ -182,10 +181,10 @@ function mostrarInformacaoPais(value){
 
 function verificaresultado(){
     var x = document.getElementById('resultado').children.length;
-    printConsole(x);
+    //printConsole(x);
     if(x > 0 ){
         document.getElementById("resultado").remove()
-        printConsole('deletei');
+        //printConsole('deletei');
         var main = document.getElementById('main');
         main.insertAdjacentHTML('beforeend', '<div class="resultado h-auto" id="resultado"></div>')   
     }
@@ -207,32 +206,66 @@ var dadosJSON;
 var dadosListaGastosComEducacao = [];
 var dadosListaIPD  = [];
 var dadosListaPIB  = [];
+var paisGrafico1;
+var paisGrafico2;
 function dadosGrafico(value){
     
     dadosJSON = JSON.parse(value);
-    if(dadosJSON[0].series.length != 0 ){
-        dadosListaGastosComEducacao[0] = ["1995", tratandoDado(dadosJSON[0].series[0].serie[3][1995])];
-        dadosListaGastosComEducacao[1] = ["2000", tratandoDado(dadosJSON[0].series[0].serie[6][2000])];
-        dadosListaGastosComEducacao[2] = ["2005", tratandoDado(dadosJSON[0].series[0].serie[17][2005])];
-        dadosListaGastosComEducacao[3] = ["2010", tratandoDado(dadosJSON[0].series[0].serie[28][2010])];
-        dadosListaGastosComEducacao[4] = ["2015", tratandoDado(dadosJSON[0].series[0].serie[39][2015])];
-        dadosListaGastosComEducacao[5] = ["2020", tratandoDado(dadosJSON[0].series[0].serie[48][2020])];
+    if(controle == 1){
+        paisGrafico1 = dadosJSON[0].series[0].pais["nome"]
+        if(dadosJSON[0].series.length != 0 ){
+            dadosListaGastosComEducacao[0] = ["1995", tratandoDado(dadosJSON[0].series[0].serie[3][1995])];
+            dadosListaGastosComEducacao[1] = ["2000", tratandoDado(dadosJSON[0].series[0].serie[6][2000])];
+            dadosListaGastosComEducacao[2] = ["2005", tratandoDado(dadosJSON[0].series[0].serie[17][2005])];
+            dadosListaGastosComEducacao[3] = ["2010", tratandoDado(dadosJSON[0].series[0].serie[28][2010])];
+            dadosListaGastosComEducacao[4] = ["2015", tratandoDado(dadosJSON[0].series[0].serie[39][2015])];
+            dadosListaGastosComEducacao[5] = ["2020", tratandoDado(dadosJSON[0].series[0].serie[48][2020])];
+        }
+        if(dadosJSON[1].series.length != 0 ){
+            dadosListaIPD[0] = ["1995", tratandoDado(dadosJSON[1].series[0].serie[3][1995])];
+            dadosListaIPD[1] = ["2000", tratandoDado(dadosJSON[1].series[0].serie[6][2000])];
+            dadosListaIPD[2] = ["2005", tratandoDado(dadosJSON[1].series[0].serie[17][2005])];
+            dadosListaIPD[3] = ["2010", tratandoDado(dadosJSON[1].series[0].serie[28][2010])];
+            dadosListaIPD[4] = ["2015", tratandoDado(dadosJSON[1].series[0].serie[39][2015])];
+            dadosListaIPD[5] = ["2020", tratandoDado(dadosJSON[1].series[0].serie[48][2020])];
+        }
+        if(dadosJSON[2].series.length != 0 ){
+            dadosListaPIB[0] = ["1995", tratandoDado(dadosJSON[2].series[0].serie[3][1995])];
+            dadosListaPIB[1] = ["2000", tratandoDado(dadosJSON[2].series[0].serie[6][2000])];
+            dadosListaPIB[2] = ["2005", tratandoDado(dadosJSON[2].series[0].serie[17][2005])];
+            dadosListaPIB[3] = ["2010", tratandoDado(dadosJSON[2].series[0].serie[28][2010])];
+            dadosListaPIB[4] = ["2015", tratandoDado(dadosJSON[2].series[0].serie[39][2015])];
+            dadosListaPIB[5] = ["2020", tratandoDado(dadosJSON[2].series[0].serie[48][2020])];
+        }
     }
-    if(dadosJSON[1].series.length != 0 ){
-        dadosListaIPD[0] = ["1995", tratandoDado(dadosJSON[1].series[0].serie[3][1995])];
-        dadosListaIPD[1] = ["2000", tratandoDado(dadosJSON[1].series[0].serie[6][2000])];
-        dadosListaIPD[2] = ["2005", tratandoDado(dadosJSON[1].series[0].serie[17][2005])];
-        dadosListaIPD[3] = ["2010", tratandoDado(dadosJSON[1].series[0].serie[28][2010])];
-        dadosListaIPD[4] = ["2015", tratandoDado(dadosJSON[1].series[0].serie[39][2015])];
-        dadosListaIPD[5] = ["2020", tratandoDado(dadosJSON[1].series[0].serie[48][2020])];
-    }
-    if(dadosJSON[2].series.length != 0 ){
-        dadosListaPIB[0] = ["1995", tratandoDado(dadosJSON[2].series[0].serie[3][1995])];
-        dadosListaPIB[1] = ["2000", tratandoDado(dadosJSON[2].series[0].serie[6][2000])];
-        dadosListaPIB[2] = ["2005", tratandoDado(dadosJSON[2].series[0].serie[17][2005])];
-        dadosListaPIB[3] = ["2010", tratandoDado(dadosJSON[2].series[0].serie[28][2010])];
-        dadosListaPIB[4] = ["2015", tratandoDado(dadosJSON[2].series[0].serie[39][2015])];
-        dadosListaPIB[5] = ["2020", tratandoDado(dadosJSON[2].series[0].serie[48][2020])];
+    else if(controle == 2){
+        paisGrafico1 = dadosJSON[0].series[0].pais["nome"]
+        paisGrafico2 = dadosJSON[0].series[1].pais["nome"];
+
+        if(dadosJSON[0].series.length != 0 && dadosJSON[0].series.length != 0){
+            dadosListaGastosComEducacao[0] = ["1995", tratandoDado(dadosJSON[0].series[0].serie[3][1995]),tratandoDado(dadosJSON[0].series[1].serie[3][1995])];
+            dadosListaGastosComEducacao[1] = ["2000", tratandoDado(dadosJSON[0].series[0].serie[6][2000]), tratandoDado(dadosJSON[0].series[1].serie[6][2000])];
+            dadosListaGastosComEducacao[2] = ["2005", tratandoDado(dadosJSON[0].series[0].serie[17][2005]),tratandoDado(dadosJSON[0].series[1].serie[17][2005])];
+            dadosListaGastosComEducacao[3] = ["2010", tratandoDado(dadosJSON[0].series[0].serie[28][2010]),tratandoDado(dadosJSON[0].series[1].serie[28][2010])];
+            dadosListaGastosComEducacao[4] = ["2015", tratandoDado(dadosJSON[0].series[0].serie[39][2015]),tratandoDado(dadosJSON[0].series[1].serie[39][2015])];
+            dadosListaGastosComEducacao[5] = ["2020", tratandoDado(dadosJSON[0].series[0].serie[48][2020]),tratandoDado(dadosJSON[0].series[1].serie[48][2020])];
+        }
+        if(dadosJSON[1].series.length != 0 && dadosJSON[1].series.length != 0){
+            dadosListaIPD[0] = ["1995", tratandoDado(dadosJSON[1].series[0].serie[3][1995]), tratandoDado(dadosJSON[1].series[1].serie[3][1995])];
+            dadosListaIPD[1] = ["2000", tratandoDado(dadosJSON[1].series[0].serie[6][2000]), tratandoDado(dadosJSON[1].series[1].serie[6][2000])];
+            dadosListaIPD[2] = ["2005", tratandoDado(dadosJSON[1].series[0].serie[17][2005]), tratandoDado(dadosJSON[1].series[1].serie[17][2005])];
+            dadosListaIPD[3] = ["2010", tratandoDado(dadosJSON[1].series[0].serie[28][2010]), tratandoDado(dadosJSON[1].series[1].serie[28][2010])];
+            dadosListaIPD[4] = ["2015", tratandoDado(dadosJSON[1].series[0].serie[39][2015]), tratandoDado(dadosJSON[1].series[1].serie[39][2015])];
+            dadosListaIPD[5] = ["2020", tratandoDado(dadosJSON[1].series[0].serie[48][2020]), tratandoDado(dadosJSON[1].series[1].serie[48][2020])];
+        }
+        if(dadosJSON[2].series.length != 0 && dadosJSON[2].series.length != 0){
+            dadosListaPIB[0] = ["1995", tratandoDado(dadosJSON[2].series[0].serie[3][1995]), tratandoDado(dadosJSON[2].series[1].serie[3][1995])];
+            dadosListaPIB[1] = ["2000", tratandoDado(dadosJSON[2].series[0].serie[6][2000]), tratandoDado(dadosJSON[2].series[1].serie[6][2000])];
+            dadosListaPIB[2] = ["2005", tratandoDado(dadosJSON[2].series[0].serie[17][2005]), tratandoDado(dadosJSON[2].series[1].serie[17][2005])];
+            dadosListaPIB[3] = ["2010", tratandoDado(dadosJSON[2].series[0].serie[28][2010]), tratandoDado(dadosJSON[2].series[1].serie[28][2010])];
+            dadosListaPIB[4] = ["2015", tratandoDado(dadosJSON[2].series[0].serie[39][2015]), tratandoDado(dadosJSON[2].series[1].serie[39][2015])];
+            dadosListaPIB[5] = ["2020", tratandoDado(dadosJSON[2].series[0].serie[48][2020]), tratandoDado(dadosJSON[2].series[1].serie[48][2020])];
+        }
     }
 }
 
@@ -252,17 +285,31 @@ function printConsole(value1){
 }
 
 function drawVisualizationGastosComEducacao() {
-    
+    printConsole(controle);
     //Some raw data (not necessarily accurate)
-    var data = google.visualization.arrayToDataTable([
-      ['Ano', paisEscolhido1.value],
-      [dadosListaGastosComEducacao[0][0], dadosListaGastosComEducacao[0][1]],
-      [dadosListaGastosComEducacao[1][0], dadosListaGastosComEducacao[1][1]],
-      [dadosListaGastosComEducacao[2][0], dadosListaGastosComEducacao[2][1]],
-      [dadosListaGastosComEducacao[3][0], dadosListaGastosComEducacao[3][1]],
-      [dadosListaGastosComEducacao[4][0], dadosListaGastosComEducacao[4][1]],
-      [dadosListaGastosComEducacao[5][0], dadosListaGastosComEducacao[5][1]]
-    ]);
+    var data;
+    if(controle == 1){
+        data = google.visualization.arrayToDataTable([
+            ['Ano', paisGrafico1],
+            [dadosListaGastosComEducacao[0][0], dadosListaGastosComEducacao[0][1]],
+            [dadosListaGastosComEducacao[1][0], dadosListaGastosComEducacao[1][1]],
+            [dadosListaGastosComEducacao[2][0], dadosListaGastosComEducacao[2][1]],
+            [dadosListaGastosComEducacao[3][0], dadosListaGastosComEducacao[3][1]],
+            [dadosListaGastosComEducacao[4][0], dadosListaGastosComEducacao[4][1]],
+            [dadosListaGastosComEducacao[5][0], dadosListaGastosComEducacao[5][1]]
+        ]);
+    }
+    else if(controle == 2){
+        data = google.visualization.arrayToDataTable([
+            ['Ano', paisGrafico1, paisGrafico2],
+            [dadosListaGastosComEducacao[0][0], dadosListaGastosComEducacao[0][1] , dadosListaGastosComEducacao[0][2]],
+            [dadosListaGastosComEducacao[1][0], dadosListaGastosComEducacao[1][1] , dadosListaGastosComEducacao[1][2]],
+            [dadosListaGastosComEducacao[2][0], dadosListaGastosComEducacao[2][1] , dadosListaGastosComEducacao[2][2]],
+            [dadosListaGastosComEducacao[3][0], dadosListaGastosComEducacao[3][1] , dadosListaGastosComEducacao[3][2]],
+            [dadosListaGastosComEducacao[4][0], dadosListaGastosComEducacao[4][1] , dadosListaGastosComEducacao[4][2]],
+            [dadosListaGastosComEducacao[5][0], dadosListaGastosComEducacao[5][1] , dadosListaGastosComEducacao[5][2]]
+        ]);
+    }
     var options = {
       title : 'Economia - Gastos públicos com educação',
       vAxis: {title: '% do PIB'},
@@ -278,73 +325,79 @@ function drawVisualizationGastosComEducacao() {
 
 function drawVisualizationIPD(){
     //Some raw data (not necessarily accurate)
-    var data = google.visualization.arrayToDataTable([
-        ['Ano', paisEscolhido1.value],
-        [dadosListaIPD [0][0], dadosListaIPD [0][1]],
-        [dadosListaIPD [1][0], dadosListaIPD [1][1]],
-        [dadosListaIPD [2][0], dadosListaIPD [2][1]],
-        [dadosListaIPD [3][0], dadosListaIPD [3][1]],
-        [dadosListaIPD [4][0], dadosListaIPD [4][1]],
-        [dadosListaIPD [5][0], dadosListaIPD [5][1]]
-      ]);
-      var options = {
+    var data;
+    if(controle == 1){
+        data = google.visualization.arrayToDataTable([
+            ['Ano', paisGrafico1],
+            [dadosListaIPD [0][0], dadosListaIPD [0][1]],
+            [dadosListaIPD [1][0], dadosListaIPD [1][1]],
+            [dadosListaIPD [2][0], dadosListaIPD [2][1]],
+            [dadosListaIPD [3][0], dadosListaIPD [3][1]],
+            [dadosListaIPD [4][0], dadosListaIPD [4][1]],
+            [dadosListaIPD [5][0], dadosListaIPD [5][1]]
+        ]);
+    }
+    else if(controle == 2){
+        data = google.visualization.arrayToDataTable([
+            ['Ano', paisGrafico1, paisGrafico2],
+            [dadosListaIPD [0][0], dadosListaIPD [0][1], dadosListaIPD [0][2]],
+            [dadosListaIPD [1][0], dadosListaIPD [1][1], dadosListaIPD [1][2]],
+            [dadosListaIPD [2][0], dadosListaIPD [2][1], dadosListaIPD [2][2]],
+            [dadosListaIPD [3][0], dadosListaIPD [3][1], dadosListaIPD [3][2]],
+            [dadosListaIPD [4][0], dadosListaIPD [4][1], dadosListaIPD [4][2]],
+            [dadosListaIPD [5][0], dadosListaIPD [5][1], dadosListaIPD [5][2]]
+        ]);
+    }
+     
+    var options = {
         title : 'Economia - Investimentos em pesquisa e desenvolvimento',
         vAxis: {title: '% do PIB'},
         hAxis: {title: 'Anos'},
         seriesType: 'bars',
         series: {2: {type: 'line'}},
 
-      };
+    };
   
-      var chart = new google.visualization.ComboChart(document.getElementById('graficoInvestimentosemPesquisaeDesenvolvimento'));
-      chart.draw(data, options);
+    var chart = new google.visualization.ComboChart(document.getElementById('graficoInvestimentosemPesquisaeDesenvolvimento'));
+    chart.draw(data, options);
 }
 
 function drawVisualizationPIB(){
     //Some raw data (not necessarily accurate)
-    var data = google.visualization.arrayToDataTable([
-        ['Ano', paisEscolhido1.value],
-        [dadosListaPIB [0][0], dadosListaPIB [0][1]],
-        [dadosListaPIB [1][0], dadosListaPIB [1][1]],
-        [dadosListaPIB [2][0], dadosListaPIB [2][1]],
-        [dadosListaPIB [3][0], dadosListaPIB [3][1]],
-        [dadosListaPIB [4][0], dadosListaPIB [4][1]],
-        [dadosListaPIB [5][0], dadosListaPIB [5][1]]
-      ]);
-      var options = {
+    var data;
+    if(controle == 1){
+        data = google.visualization.arrayToDataTable([
+            ['Ano', paisGrafico1],
+            [dadosListaPIB [0][0], dadosListaPIB [0][1]],
+            [dadosListaPIB [1][0], dadosListaPIB [1][1]],
+            [dadosListaPIB [2][0], dadosListaPIB [2][1]],
+            [dadosListaPIB [3][0], dadosListaPIB [3][1]],
+            [dadosListaPIB [4][0], dadosListaPIB [4][1]],
+            [dadosListaPIB [5][0], dadosListaPIB [5][1]]
+        ]);
+    }
+    else if(controle == 2){
+        data = google.visualization.arrayToDataTable([
+            ['Ano', paisGrafico1, paisGrafico2],
+            [dadosListaPIB [0][0], dadosListaPIB [0][1], dadosListaPIB [0][2]],
+            [dadosListaPIB [1][0], dadosListaPIB [1][1], dadosListaPIB [1][2]],
+            [dadosListaPIB [2][0], dadosListaPIB [2][1], dadosListaPIB [2][2]],
+            [dadosListaPIB [3][0], dadosListaPIB [3][1], dadosListaPIB [3][2]],
+            [dadosListaPIB [4][0], dadosListaPIB [4][1], dadosListaPIB [4][2]],
+            [dadosListaPIB [5][0], dadosListaPIB [5][1], dadosListaPIB [5][2]]
+        ]);
+    }
+
+    var options = {
         title : 'Economia - Total do PIB',
         vAxis: {title: 'US$'},
         hAxis: {title: 'Anos'},
         seriesType: 'bars',
         series: {6: {type: 'line'}},
 
-      };
+    };
   
-      var chart = new google.visualization.ComboChart(document.getElementById('graficoTotaldoPib'));
-      chart.draw(data, options);
+    var chart = new google.visualization.ComboChart(document.getElementById('graficoTotaldoPib'));
+    chart.draw(data, options);
 }
-// function drawVisualization() {
-    
-//     //Some raw data (not necessarily accurate)
-//     var data = google.visualization.arrayToDataTable([
-//       ['Ano', paisEscolhido1.value],
-//       [dadosFiltrado[0][0], dadosFiltrado[0][1]],
-//       [dadosFiltrado[1][0], dadosFiltrado[1][1]],
-//       [dadosFiltrado[2][0], dadosFiltrado[2][1]],
-//       [dadosFiltrado[3][0], dadosFiltrado[3][1]],
-//       [dadosFiltrado[4][0], dadosFiltrado[4][1]],
-//       [dadosFiltrado[5][0], dadosFiltrado[5][1]]
-//     ]);
-//     var data;
-//     var options = {
-//       title : 'Economia - Gastos públicos com educação',
-//       vAxis: {title: '% do PIB'},
-//       hAxis: {title: 'Anos'},
-//       seriesType: 'bars',
-//       series: {2: {type: 'line'}},
-//     };
-
-//     var chart = new google.visualization.ComboChart(document.getElementById('graficoPIB'));
-//     chart.draw(data, options);
-// }
 
