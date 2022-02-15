@@ -102,6 +102,7 @@ function cacheInfo(v_controle, pais1, code1){
     this.code1 = code1;
 }
 var paisEscolhido1;
+var paisEscolhido2
 var codePais1;
 var codePais2;
 function buscarDados(){
@@ -110,8 +111,6 @@ function buscarDados(){
     opcaoEscolhida = document.getElementsByName('opcao_escolhida');
     paisEscolhido1 = document.getElementById('escolhaPais1');
     paisEscolhido2 = document.getElementById('escolhaPais2');
-    
-    
     
     if (opcaoEscolhida[0].checked == true) {
         codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value)
@@ -138,7 +137,6 @@ function mostrarInformacaoPais(value){
     verificaresultado();
     
     var resultado = document.getElementById('resultado');
-    //verificaSeTemResultadoNatela();
     
     if(controle == 1){
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
@@ -201,7 +199,38 @@ function alertaEscolha(controle, pais1, pais2){
         }
     }
 }
-
+function verificarOrdemDadosPaises(){
+    if(dadosJSON[0].series.length  == 2){
+        if(paisEscolhido1.value == dadosJSON[0].series[0].pais["nome"]){
+            paisGrafico1 = paisEscolhido1.value;
+            paisGrafico2 = paisEscolhido2.value;
+        }else{
+            paisGrafico1 = paisEscolhido2.value;
+            paisGrafico2 = paisEscolhido1.value;
+        }
+    }
+    else if(dadosJSON[1].series.length == 2){
+        if(paisEscolhido1.value == dadosJSON[1].series[0].pais["nome"]){
+            paisGrafico1 = paisEscolhido1.value;
+            paisGrafico2 = paisEscolhido2.value;
+        }else{
+            paisGrafico1 = paisEscolhido2.value;
+            paisGrafico2 = paisEscolhido1.value;
+        }
+    }
+    else if(dadosJSON[3].series.length == 2){
+        if(paisEscolhido1.value == dadosJSON[2].series[0].pais["nome"]){
+            paisGrafico1 = paisEscolhido1.value;
+            paisGrafico2 = paisEscolhido2.value;
+        }else{
+            paisGrafico1 = paisEscolhido2.value;
+            paisGrafico2 = paisEscolhido1.value;
+        }
+    }else{
+        paisGrafico1 = paisEscolhido2.value;
+        paisGrafico2 = paisEscolhido1.value;
+    }
+}
 var dadosJSON;
 var dadosListaGastosComEducacao = [];
 var dadosListaIPD  = [];
@@ -239,9 +268,7 @@ function dadosGrafico(value){
         }
     }
     else if(controle == 2){
-        paisGrafico1 = dadosJSON[0].series[0].pais["nome"]
-        paisGrafico2 = dadosJSON[0].series[1].pais["nome"];
-
+        verificarOrdemDadosPaises();
         if(dadosJSON[0].series.length != 0 && dadosJSON[0].series.length != 0){
             dadosListaGastosComEducacao[0] = ["1995", tratandoDado(dadosJSON[0].series[0].serie[3][1995]),tratandoDado(dadosJSON[0].series[1].serie[3][1995])];
             dadosListaGastosComEducacao[1] = ["2000", tratandoDado(dadosJSON[0].series[0].serie[6][2000]), tratandoDado(dadosJSON[0].series[1].serie[6][2000])];
