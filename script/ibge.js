@@ -41,25 +41,7 @@ function loadOptionsJson(){
 }
 var listaJson;
 var listaPaises = [];
-// function carregandoOpcaoPaises(value){
-    
-//     var dataList = document.getElementById('listaPaises')
-//     var add_option;
-    
-//     listaJson = JSON.parse(value);
-//     for (let i = 0; i < listaJson.length; i++) {
-//         var codeAlpha2 = listaJson[i].id["ISO-3166-1-ALPHA-2"]
-//         var nomeAbreviado = listaJson[i].nome["abreviado"];
-//         listaPaises.push(new pais(codeAlpha2, nomeAbreviado));
-//     }
-//     //listaPaises.sort();
-//     for (let i = 0; i < listaPaises.length; i++) {
-//         add_option = new Option
-//         add_option.value = listaPaises[i].nomeAbreviado;
-//         add_option.innerHTML = listaPaises[i].nomeAbreviado;
-//         dataList.appendChild(add_option);
-//     }
-// }
+
 function carregandoOpcaoPaises(value){
     
     listaJson = JSON.parse(value);
@@ -71,8 +53,8 @@ function carregandoOpcaoPaises(value){
         var novaOpcao = document.createElement('option');
         novaOpcao.value = codeAlpha2;
         novaOpcao.innerHTML = nomeAbreviado;
+        novaOpcao.id = codeAlpha2
         select1.appendChild(novaOpcao);
-        //select2.appendChild(novaOpcao);
     }
     for (let i = 0; i < listaJson.length; i++) {
         var codeAlpha2 = listaJson[i].id["ISO-3166-1-ALPHA-2"]
@@ -80,11 +62,16 @@ function carregandoOpcaoPaises(value){
         var novaOpcao = document.createElement('option');
         novaOpcao.value = codeAlpha2;
         novaOpcao.innerHTML = nomeAbreviado;
+        novaOpcao.id = codeAlpha2
         select2.appendChild(novaOpcao);
     }
+    //carramendoLocalStorage();
 }
 
-
+function pais(code, pais){
+    this.code = code;
+    this.pais= pais;
+}
 function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
     let codeAlpha2Encontrado = null;
     
@@ -95,34 +82,60 @@ function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
     });
     return codeAlpha2Encontrado;
 }
+
+$(".radio-option").change(function(){
+    var opcaoEscolhida = document.getElementsByName('opcao_escolhida');
+    var inputDisplaySegundoPais = document.getElementById('escolhaPais2');
+    
+    if (opcaoEscolhida[0].checked == true) {        
+        inputDisplaySegundoPais.style.display = 'none';
+        cachePageOpcaoEscolhida = localStorage.setItem('opcaoEscolhida', ("#"+document.getElementsByName('opcao_escolhida')[0].value), 'mais um valor');     
+    }
+    else{
+        inputDisplaySegundoPais.style.display = 'inline'
+        cachePageOpcaoEscolhida= localStorage.setItem('opcaoEscolhida', "#"+document.getElementsByName('opcao_escolhida')[1].value);
+    }
+    
+}
+);
+
 var cachePais1;
 var cachePais2;
 $(".entradaPais").change(function(){
-    printConsole(document.getElementById('escolhaPais1').value);
-    
-    buscarDados();
-});
-var cachePageOpcaoEscolhida;
-
-$(".radio-option").change(function(){
-        var opcaoEscolhida = document.getElementsByName('opcao_escolhida');
-        var inputDisplaySegundoPais = document.getElementById('escolhaPais2');
-        
-        if (opcaoEscolhida[0].checked == true) {        
-            inputDisplaySegundoPais.style.display = 'none';
-            cachePageOpcaoEscolhida = localStorage.setItem('opcaoEscolhida', document.getElementsByName('opcao_escolhida')[0].value, 'mais um valor');     
-        }
-        else{
-            inputDisplaySegundoPais.style.display = 'inline'
-            cachePageOpcaoEscolhida= localStorage.setItem('opcaoEscolhida', document.getElementsByName('opcao_escolhida')[1].value);
-        }
-        
+    var opcao_escolhida = document.getElementsByName('opcao_escolhida');
+    var paisEscolhido1 = document.getElementById('escolhaPais1');
+    var paisEscolhido2 = document.getElementById('escolhaPais2'); 
+    if((opcao_escolhida[0].checked == true && localStorage.getItem('pais1escolhido') != paisEscolhido1.value) || (opcao_escolhida[1].checked == true && paisEscolhido1.value != paisEscolhido2.value)){
+        buscarDados();
     }
-);
+    
+});
 
-
+function carramendoLocalStorage(){
+    
+    var opcao_escolhida = document.getElementsByName('opcao_escolhida');
+    var paisEscolhido1 = document.getElementById('escolhaPais1');
+    var paisEscolhido2 = document.getElementById('escolhaPais2'); 
+    
+    if(localStorage.length == 3){
+        printConsole(localStorage.length)
+        if(localStorage.getItem('opcaoEscolhida') == '#opcao2'){           
+            //opcao_escolhida[1].checked ='true';
+            $( "#opcao2" ).trigger( "click" );
+            //paisEscolhido1.value = ;
+            
+            $(toString(localStorage.getItem('pais1escolhido'))).trigger( "click" );
+            $(localStorage.getItem('pais2escolhido')).trigger( "click" );
+            //paisEscolhido2.value = localStorage.getItem('pais2escolhido');
+        }
+        else if(localStorage.getItem('opcaoEscolhida') == '#opcao1'){
+            //paisEscolhido1.value = localStorage.getItem('pais1escolhido');
+            $(localStorage.getItem('pais1escolhido')).trigger( "click" );
+        }
+    }
+}
+var cachePageOpcaoEscolhida;
 var controle;
-
 var paisEscolhido1;
 var paisEscolhido2
 var codePais1;
@@ -133,8 +146,8 @@ function buscarDados(){
     opcaoEscolhida = document.getElementsByName('opcao_escolhida');
     paisEscolhido1 = document.getElementById('escolhaPais1');
     paisEscolhido2 = document.getElementById('escolhaPais2');
-    cachePais1 = localStorage.setItem('pais1escolhido', paisEscolhido1.value);
-    cachePais2 = localStorage.setItem('pais2escolhido', paisEscolhido2.value);
+    cachePais1 = localStorage.setItem('pais1escolhido', '#'+paisEscolhido1.value);
+    cachePais2 = localStorage.setItem('pais2escolhido', '#'+paisEscolhido2.value);
     if (opcaoEscolhida[0].checked == true) {
         codePais1 = paisEscolhido1.value;
         controle = 1;
@@ -153,9 +166,7 @@ function buscarDados(){
     
     alertaEscolha(controle, paisEscolhido1.value, paisEscolhido2.value);
 }
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
+
 var infoPais
 function mostrarInformacaoPais(value){
     infoPais = JSON.parse(value);
@@ -164,7 +175,7 @@ function mostrarInformacaoPais(value){
     var resultado = document.getElementById('resultado');
     
     if(controle == 1){
-        resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
+        resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-2'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
         resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > País não possui dados</div>');
 
@@ -177,9 +188,9 @@ function mostrarInformacaoPais(value){
         var infoDiv1 = document.getElementById('info_pais');
         var infoDiv2 = document.getElementById('info_pais');
         
-        infoDiv1.insertAdjacentHTML('beforeend',`<div class="me-5" id = "info_pais1"> <h1>`+ infoPais[1].nome['abreviado'] + ` ` + infoPais[1].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[1].area['total'] + ` Km² | Continente: `+ infoPais[1].localizacao.regiao.nome + ` | Capital: ` + infoPais[1].governo.capital.nome +` </p> </div>` );
+        infoDiv1.insertAdjacentHTML('beforeend',`<div class="me-5" id = "info_pais1"> <h1>`+ infoPais[1].nome['abreviado'] + ` ` + infoPais[1].id['ISO-3166-1-ALPHA-2'] + `</h1> <p> Área Total: ` + infoPais[1].area['total'] + ` Km² | Continente: `+ infoPais[1].localizacao.regiao.nome + ` | Capital: ` + infoPais[1].governo.capital.nome +` </p> </div>` );
 
-        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
+        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-2'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
         resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
 
