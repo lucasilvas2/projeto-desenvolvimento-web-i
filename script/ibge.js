@@ -84,10 +84,6 @@ function carregandoOpcaoPaises(value){
     }
 }
 
-function pais(codeAlpha2, nomeAbreviado){
-    this.codeAlpha2 = codeAlpha2;
-    this.nomeAbreviado = nomeAbreviado;  
-}
 
 function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
     let codeAlpha2Encontrado = null;
@@ -99,20 +95,26 @@ function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
     });
     return codeAlpha2Encontrado;
 }
-
+var cachePais1;
+var cachePais2;
 $(".entradaPais").change(function(){
     printConsole(document.getElementById('escolhaPais1').value);
+    
     buscarDados();
 });
+var cachePageOpcaoEscolhida;
 
 $(".radio-option").change(function(){
         var opcaoEscolhida = document.getElementsByName('opcao_escolhida');
-        var inputDisplaySegundoPais = document.getElementById('escolhaPais2')
+        var inputDisplaySegundoPais = document.getElementById('escolhaPais2');
+        
         if (opcaoEscolhida[0].checked == true) {        
-            inputDisplaySegundoPais.style.display = 'none'     
+            inputDisplaySegundoPais.style.display = 'none';
+            cachePageOpcaoEscolhida = localStorage.setItem('opcaoEscolhida', document.getElementsByName('opcao_escolhida')[0].value, 'mais um valor');     
         }
         else{
-            inputDisplaySegundoPais.style.display = 'inline' 
+            inputDisplaySegundoPais.style.display = 'inline'
+            cachePageOpcaoEscolhida= localStorage.setItem('opcaoEscolhida', document.getElementsByName('opcao_escolhida')[1].value);
         }
         
     }
@@ -120,11 +122,7 @@ $(".radio-option").change(function(){
 
 
 var controle;
-function cacheInfo(v_controle, pais1, code1){
-    this.v_controle = v_controle;
-    this.pais1 = pais1;
-    this.code1 = code1;
-}
+
 var paisEscolhido1;
 var paisEscolhido2
 var codePais1;
@@ -135,7 +133,8 @@ function buscarDados(){
     opcaoEscolhida = document.getElementsByName('opcao_escolhida');
     paisEscolhido1 = document.getElementById('escolhaPais1');
     paisEscolhido2 = document.getElementById('escolhaPais2');
-    
+    cachePais1 = localStorage.setItem('pais1escolhido', paisEscolhido1.value);
+    cachePais2 = localStorage.setItem('pais2escolhido', paisEscolhido2.value);
     if (opcaoEscolhida[0].checked == true) {
         codePais1 = paisEscolhido1.value;
         controle = 1;
