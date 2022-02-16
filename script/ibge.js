@@ -39,6 +39,10 @@ function xhttpAssincrono(callBackFunction, type, value1, value2) {
 function loadOptionsJson(){
     xhttpAssincrono(carregandoOpcaoPaises,1,)
 }
+function Pais(code2, nomeAbreviado){
+    this.code2 = code2;
+    this.nomeAbreviado = nomeAbreviado;
+}
 var listaJson;
 var listaPaises = [];
 
@@ -55,6 +59,8 @@ function carregandoOpcaoPaises(value){
         novaOpcao.innerHTML = nomeAbreviado;
         novaOpcao.id = codeAlpha2
         select1.appendChild(novaOpcao);
+        novoPaisLista = new Pais(codeAlpha2,nomeAbreviado);
+        listaPaises.push(novoPaisLista);
     }
     for (let i = 0; i < listaJson.length; i++) {
         var codeAlpha2 = listaJson[i].id["ISO-3166-1-ALPHA-2"]
@@ -65,22 +71,29 @@ function carregandoOpcaoPaises(value){
         novaOpcao.id = codeAlpha2
         select2.appendChild(novaOpcao);
     }
-    //carramendoLocalStorage();
+    carregamentoLocalStorage();
 }
 
-function pais(code, pais){
-    this.code = code;
-    this.pais= pais;
-}
-function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
-    let codeAlpha2Encontrado = null;
+
+// function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
+//     let codeAlpha2Encontrado = null;
+    
+//     listaPaises.forEach(pais => {
+//         if (nomeAbreviado == pais.nomeAbreviado) {
+//             codeAlpha2Encontrado = pais.codeAlpha2;
+//         }        
+//     });
+//     return codeAlpha2Encontrado;
+// }
+function retornaNomeAbreviadoComparandoOCodeAlpha2(code){
+    let nomeAbreviadoEncontrado = null;
     
     listaPaises.forEach(pais => {
-        if (nomeAbreviado == pais.nomeAbreviado) {
-            codeAlpha2Encontrado = pais.codeAlpha2;
+        if (code == pais.code2) {
+            nomeAbreviadoEncontrado = pais.nomeAbreviado;
         }        
     });
-    return codeAlpha2Encontrado;
+    return nomeAbreviadoEncontrado;
 }
 var controle = 1;
 $(".radio-option").change(function(){
@@ -122,15 +135,14 @@ function carregamentoLocalStorage(){
         if(localStorage.getItem('opcaoEscolhida') == 'opcao2'){           
             //opcao_escolhida[1].checked ='true';
             $( "#opcao2" ).trigger( "click" );
-            //paisEscolhido1.value = ;
-            
-            $(toString(localStorage.getItem('pais1escolhido'))).trigger( "click" );
-            $(localStorage.getItem('pais2escolhido')).trigger( "click" );
-            //paisEscolhido2.value = localStorage.getItem('pais2escolhido');
+            paisEscolhido1.value = localStorage.getItem('pais1escolhido');
+            paisEscolhido2.value = localStorage.getItem('pais2escolhido');
+            buscarDados();
         }
         else if(localStorage.getItem('opcaoEscolhida') == 'opcao1'){
-            //paisEscolhido1.value = localStorage.getItem('pais1escolhido');
-            $(localStorage.getItem('pais1escolhido')).trigger( "click" );
+            paisEscolhido1.value = localStorage.getItem('pais1escolhido');
+            buscarDados();
+            
         }
     }
 }

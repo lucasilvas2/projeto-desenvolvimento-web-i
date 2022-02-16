@@ -1,11 +1,11 @@
 .grafico {
     width: 900px;
-    height: 1000px;
+    height: 500px;
 }
 
-@media (max-width: 500px){
+@media only screen and (max-width: 500px){
     .grafico {
         width: 400px;
-        height: 500px;
+        height: 600px;
     }
 }
