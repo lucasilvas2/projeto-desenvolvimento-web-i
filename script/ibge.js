@@ -1,5 +1,6 @@
 //https://imsea.herokuapp.com/api/1?q=
 //api para buscar bandeira dos paises
+
 function xhttpAssincrono(callBackFunction, type, value1, value2) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -40,26 +41,48 @@ function loadOptionsJson(){
 }
 var listaJson;
 var listaPaises = [];
-function carregandoOpcaoPaises(value){
+// function carregandoOpcaoPaises(value){
     
-    var dataList = document.getElementById('listaPaises')
-    var add_option;
+//     var dataList = document.getElementById('listaPaises')
+//     var add_option;
+    
+//     listaJson = JSON.parse(value);
+//     for (let i = 0; i < listaJson.length; i++) {
+//         var codeAlpha2 = listaJson[i].id["ISO-3166-1-ALPHA-2"]
+//         var nomeAbreviado = listaJson[i].nome["abreviado"];
+//         listaPaises.push(new pais(codeAlpha2, nomeAbreviado));
+//     }
+//     //listaPaises.sort();
+//     for (let i = 0; i < listaPaises.length; i++) {
+//         add_option = new Option
+//         add_option.value = listaPaises[i].nomeAbreviado;
+//         add_option.innerHTML = listaPaises[i].nomeAbreviado;
+//         dataList.appendChild(add_option);
+//     }
+// }
+function carregandoOpcaoPaises(value){
     
     listaJson = JSON.parse(value);
     for (let i = 0; i < listaJson.length; i++) {
+        var select1 = document.getElementById('escolhaPais1')
+        var select2 = document.getElementById('escolhaPais2')
         var codeAlpha2 = listaJson[i].id["ISO-3166-1-ALPHA-2"]
         var nomeAbreviado = listaJson[i].nome["abreviado"];
-        listaPaises.push(new pais(codeAlpha2, nomeAbreviado));
+        var novaOpcao = document.createElement('option');
+        novaOpcao.value = codeAlpha2;
+        novaOpcao.innerHTML = nomeAbreviado;
+        select1.appendChild(novaOpcao);
+        //select2.appendChild(novaOpcao);
     }
-    //listaPaises.sort();
-    for (let i = 0; i < listaPaises.length; i++) {
-        add_option = new Option
-        add_option.value = listaPaises[i].nomeAbreviado;
-        add_option.innerHTML = listaPaises[i].nomeAbreviado;
-        dataList.appendChild(add_option);
+    for (let i = 0; i < listaJson.length; i++) {
+        var codeAlpha2 = listaJson[i].id["ISO-3166-1-ALPHA-2"]
+        var nomeAbreviado = listaJson[i].nome["abreviado"];
+        var novaOpcao = document.createElement('option');
+        novaOpcao.value = codeAlpha2;
+        novaOpcao.innerHTML = nomeAbreviado;
+        select2.appendChild(novaOpcao);
     }
 }
-
 
 function pais(codeAlpha2, nomeAbreviado){
     this.codeAlpha2 = codeAlpha2;
@@ -77,7 +100,8 @@ function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
     return codeAlpha2Encontrado;
 }
 
-$("#buscar").click(function(){
+$(".entradaPais").change(function(){
+    printConsole(document.getElementById('escolhaPais1').value);
     buscarDados();
 });
 
@@ -113,7 +137,7 @@ function buscarDados(){
     paisEscolhido2 = document.getElementById('escolhaPais2');
     
     if (opcaoEscolhida[0].checked == true) {
-        codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value)
+        codePais1 = paisEscolhido1.value;
         controle = 1;
         xhttpAssincrono(dadosGrafico, 4, codePais1);
         xhttpAssincrono(mostrarInformacaoPais, 2, codePais1);    
@@ -121,11 +145,10 @@ function buscarDados(){
     }
     else if (opcaoEscolhida[1].checked == true){
         
-        codePais1 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido1.value);
-        codePais2 = retornaCodeAlpha2ComparandoONomeAbreviado(paisEscolhido2.value);
+        codePais1 = paisEscolhido1.value;
+        codePais2 = paisEscolhido2.value;
         controle = 2;
         xhttpAssincrono(dadosGrafico, 5, codePais1, codePais2);
-        sleep(50);
         xhttpAssincrono(mostrarInformacaoPais, 3, codePais1, codePais2);        
     }
     
@@ -144,11 +167,11 @@ function mostrarInformacaoPais(value){
     if(controle == 1){
         resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > País não possui dados</div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > Gráfico </div>');       
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > País não possui dados </div>');       
     }
     else if(controle == 2){
         resultado.insertAdjacentHTML('beforeend', `<div class="d-flex justify-content-center" id="info_pais">  </div>`);
@@ -159,11 +182,11 @@ function mostrarInformacaoPais(value){
 
         infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-3'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > Gráfico </div>');
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > Gráfico </div>');  
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > País não possui dados </div>');  
     }
   
     google.charts.setOnLoadCallback(drawVisualizationIPD);
@@ -198,7 +221,7 @@ function alertaEscolha(controle, pais1, pais2){
 }
 function verificarOrdemDadosPaises(){
     if(dadosJSON[0].series.length  == 2){
-        if(paisEscolhido1.value == dadosJSON[0].series[0].pais["nome"]){
+        if(paisEscolhido1.value == dadosJSON[0].series[0].pais["id"]){
             paisGrafico1 = paisEscolhido1.value;
             paisGrafico2 = paisEscolhido2.value;
         }else{
@@ -207,7 +230,7 @@ function verificarOrdemDadosPaises(){
         }
     }
     else if(dadosJSON[1].series.length == 2){
-        if(paisEscolhido1.value == dadosJSON[1].series[0].pais["nome"]){
+        if(paisEscolhido1.value == dadosJSON[1].series[0].pais["id"]){
             paisGrafico1 = paisEscolhido1.value;
             paisGrafico2 = paisEscolhido2.value;
         }else{
@@ -216,7 +239,7 @@ function verificarOrdemDadosPaises(){
         }
     }
     else if(dadosJSON[3].series.length == 2){
-        if(paisEscolhido1.value == dadosJSON[2].series[0].pais["nome"]){
+        if(paisEscolhido1.value == dadosJSON[2].series[0].pais["id"]){
             paisGrafico1 = paisEscolhido1.value;
             paisGrafico2 = paisEscolhido2.value;
         }else{

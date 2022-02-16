@@ -31,12 +31,18 @@
                     </div>
                 </div>
                 <div class="entradaPais col-md-6">
-                    <input type="text" list="listaPaises" placeholder="Ex: Brasil" name="escolhaPais1" id="escolhaPais1" class="col-sm-5 custom-select custom-select-sm escolhaPais1">
+                    <select name="escolhaPais1" id="escolhaPais1" class="w-100">
+                        <option value="-1" disabled = "true" selected="true"> Escolha um pais</option>
+                    </select>
+                    <select name="escolhaPais2" id="escolhaPais2" class="w-100" style="display: none;">
+                        <option value="-1" disabled = "true" selected="true"> Escolha um segundo pais</option>
+                    </select>
+                    <!-- <input type="text" list="listaPaises" placeholder="Ex: Brasil" name="escolhaPais1" id="escolhaPais1" class="col-sm-5 custom-select custom-select-sm escolhaPais1">
                     <datalist id="listaPaises">
                     </datalist>
                     <button type="button" id="buscar"
                     class="btn btn-outline-success btn-dark col-sm-4 ms-1 " value="Buscar">Buscar</button>
-                    <input type="text" list="listaPaises" placeholder="Ex: Alemanha" name="escolhaPais2" id="escolhaPais2" class="col-sm-5 custom-select custom-select-sm escolhaPais2" style="display: none;">
+                    <input type="text" list="listaPaises" placeholder="Ex: Alemanha" name="escolhaPais2" id="escolhaPais2" class="col-sm-5 custom-select custom-select-sm escolhaPais2" style="display: none;"> -->
                     <!-- <button class="btn btn-outline-success btn-dark buscar" type="submit">Buscar</button> -->
                 </div>
                 
