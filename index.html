@@ -10,20 +10,23 @@
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script  type="text/javascript">google.charts.load('current', {'packages':['corechart']});</script>
     <link rel="stylesheet" href="./css/style.css">
-    <title>Analise seu País</title>
+    <link rel="shortcut icon" href="./image/search.svg" type="image/x-icon">
+    <title>Pesquise a educação</title>
 </head>
 <body onload="loadOptionsJson()">
     
-    <nav class="navbar navbar-expand-lg align-items-center" style="background-color: aquamarine;">
+    <nav class="navbar navbar-expand-lg align-items-center bg-info text-dark">
         <div class="container ">
-            <div class="logoSite col-md-3">
-                <p class="h4">Analise seu País</p>
+            <div class="logoSite col-md-3">               
+                <p class="h4"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg> Pesquise a educação</p>
             </div>
             <form id="menu" class="menu row col-md-9">
                 <div class="radio-option col-md-3">
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="opcao_escolhida" id="opcao1" value="opcao1" checked>
-                        <label class="form-check-label" for="opcao1"> 1 País</label>
+                        <label class="form-check-label " for="opcao1"> 1 País</label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="opcao_escolhida" id="opcao2" value="opcao2">
@@ -32,18 +35,12 @@
                 </div>
                 <div class="entradaPais col-md-6">
                     <select name="escolhaPais1" id="escolhaPais1" class="w-100">
-                        <option value="-1" disabled = "true" selected="true"> Escolha um pais</option>
+                        <option value="-1" disabled = "true" selected="true"> Escolha um país</option>
                     </select>
                     <select name="escolhaPais2" id="escolhaPais2" class="w-100" style="display: none;">
-                        <option value="-1" disabled = "true" selected="true"> Escolha um segundo pais</option>
+                        <option value="-1" disabled = "true" selected="true"> Escolha um segundo país</option>
                     </select>
-                    <!-- <input type="text" list="listaPaises" placeholder="Ex: Brasil" name="escolhaPais1" id="escolhaPais1" class="col-sm-5 custom-select custom-select-sm escolhaPais1">
-                    <datalist id="listaPaises">
-                    </datalist>
-                    <button type="button" id="buscar"
-                    class="btn btn-outline-success btn-dark col-sm-4 ms-1 " value="Buscar">Buscar</button>
-                    <input type="text" list="listaPaises" placeholder="Ex: Alemanha" name="escolhaPais2" id="escolhaPais2" class="col-sm-5 custom-select custom-select-sm escolhaPais2" style="display: none;"> -->
-                    <!-- <button class="btn btn-outline-success btn-dark buscar" type="submit">Buscar</button> -->
+
                 </div>
                 
                 <div class="about col-md-3 "> <a href="http://github.com/lucasilvas2/projeto-desenvolvimento-web-i" class="text-decoration-none text-dark"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
@@ -55,13 +52,14 @@
 
     <main id="main" class="h-auto">
         <div class="resultado h-auto justify-content-center" id="resultado">
+            
         </div>
     </main>
 
     <footer>
-
+        <img src="" alt="" srcset="">
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="./script/ibge.js"></script>
+    <script src="./script/script.js"></script>
 </body>
 </html>

@@ -1,6 +1,38 @@
-//https://imsea.herokuapp.com/api/1?q=
-//api para buscar bandeira dos paises
+//Api de busca de imagem é um acesso gratuito
+//Tem um limitação de 3 requisições por segundo
+//Alterações mais rápidas que esse tempo provoca problema de carregamento da página
+//Itenção é utilizar a api apenas como teste
+function xhttpAssincronoBandeira(callBackFunction, pais) {
+    const data = null;
 
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+    
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+            callBackFunction(this.responseText);
+        }
+    });
+    var url = "https://bing-image-search1.p.rapidapi.com/images/search?q=bandeira " + pais;
+    xhr.open("GET", url);
+    xhr.setRequestHeader("x-rapidapi-host", "bing-image-search1.p.rapidapi.com");
+    xhr.setRequestHeader("x-rapidapi-key", "11ca683198mshd910c0532f1c1f3p1488c4jsn3a0fbb212eda");
+    
+    xhr.send(data);
+}
+
+function bandeiraPais1(value){
+    var dadobandeira = JSON.parse(value);
+    var bandeiraLink = dadobandeira.value[0]["contentUrl"];
+    var imgPais1 = document.getElementById('imgPais1');
+    imgPais1.src = bandeiraLink;
+}
+function bandeiraPais2(value){
+    var dadobandeira = JSON.parse(value);
+    var bandeiraLink = dadobandeira.value[0]["contentUrl"];
+    var imgPais2 = document.getElementById('imgPais2');
+    imgPais2.src = bandeiraLink;
+}
 function xhttpAssincrono(callBackFunction, type, value1, value2) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -31,11 +63,11 @@ function xhttpAssincrono(callBackFunction, type, value1, value2) {
     xhttp.open("GET", url, true);
     xhttp.send();
 }
+//indicadores utilizados
 //77827 - Economia - Total do PIB
 //77819- Economia - Gastos públicos com educação
 //77821- Economia - Investimentos em pesquisa e desenvolvimento
-//77835- Indicadores sociais - Taxa bruta de matrículas para todos os níveis de ensino
-//77836- Indicadores sociais - Taxa de alfabetização das pessoas de 15 anos ou mais de idade
+
 function loadOptionsJson(){
     xhttpAssincrono(carregandoOpcaoPaises,1,)
 }
@@ -74,17 +106,6 @@ function carregandoOpcaoPaises(value){
     carregamentoLocalStorage();
 }
 
-
-// function retornaCodeAlpha2ComparandoONomeAbreviado(nomeAbreviado){
-//     let codeAlpha2Encontrado = null;
-    
-//     listaPaises.forEach(pais => {
-//         if (nomeAbreviado == pais.nomeAbreviado) {
-//             codeAlpha2Encontrado = pais.codeAlpha2;
-//         }        
-//     });
-//     return codeAlpha2Encontrado;
-// }
 function retornaNomeAbreviadoComparandoOCodeAlpha2(code){
     let nomeAbreviadoEncontrado = null;
     
@@ -113,7 +134,6 @@ $(".radio-option").change(function(){
     
 }
 );
-
 var cachePais1;
 var cachePais2;
 $(".entradaPais").change(function(){
@@ -125,15 +145,12 @@ $(".entradaPais").change(function(){
     }
 });
 
-function carregamentoLocalStorage(){
-    
-    var opcao_escolhida = document.getElementsByName('opcao_escolhida');
+function carregamentoLocalStorage(){   
     var paisEscolhido1 = document.getElementById('escolhaPais1');
     var paisEscolhido2 = document.getElementById('escolhaPais2'); 
     
     if(localStorage.length == 3){
         if(localStorage.getItem('opcaoEscolhida') == 'opcao2'){           
-            //opcao_escolhida[1].checked ='true';
             $( "#opcao2" ).trigger( "click" );
             paisEscolhido1.value = localStorage.getItem('pais1escolhido');
             paisEscolhido2.value = localStorage.getItem('pais2escolhido');
@@ -147,7 +164,6 @@ function carregamentoLocalStorage(){
     }
 }
 var cachePageOpcaoEscolhida;
-
 var paisEscolhido1;
 var paisEscolhido2
 var codePais1;
@@ -171,58 +187,48 @@ function buscarDados(){
         codePais1 = paisEscolhido1.value;
         codePais2 = paisEscolhido2.value;
         xhttpAssincrono(mostrarInformacaoPais, 3, codePais1, codePais2);   
-        xhttpAssincrono(dadosGrafico, 5, codePais1, codePais2);
-             
-    }
-    
-    
+        xhttpAssincrono(dadosGrafico, 5, codePais1, codePais2);            
+    }     
 }
 
 var infoPais
 function mostrarInformacaoPais(value){
     infoPais = JSON.parse(value);
-    //verificaresultado();
     
     var resultado = document.getElementById('resultado');
     
     if(controle == 1){
-        resultado.insertAdjacentHTML('beforeend', `<div class="container" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-2'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
+        resultado.insertAdjacentHTML('beforeend', `<div class="container align-items-center" id="info_pais"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-2'] + `<img id="imgPais1" class="bandeira ms-2 border border-dark" src="" alt="" srcset=""> </h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
         resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > País não possui dados</div>');
 
         resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
 
         resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
-              
+                   
     }
     else if(controle == 2){
         resultado.insertAdjacentHTML('beforeend', `<div class="d-flex justify-content-center" id="info_pais">  </div>`);
         var infoDiv1 = document.getElementById('info_pais');
         var infoDiv2 = document.getElementById('info_pais');
         
-        infoDiv1.insertAdjacentHTML('beforeend',`<div class="me-5" id = "info_pais1"> <h1>`+ infoPais[1].nome['abreviado'] + ` ` + infoPais[1].id['ISO-3166-1-ALPHA-2'] + `</h1> <p> Área Total: ` + infoPais[1].area['total'] + ` Km² | Continente: `+ infoPais[1].localizacao.regiao.nome + ` | Capital: ` + infoPais[1].governo.capital.nome +` </p> </div>` );
+        infoDiv1.insertAdjacentHTML('beforeend',`<div class="me-5" id = "info_pais1"> <h1>`+ infoPais[1].nome['abreviado'] + ` ` + infoPais[1].id['ISO-3166-1-ALPHA-2'] + ` <img id="imgPais1" class="bandeira" src="" alt="" srcset=""></h1> <p> Área Total: ` + infoPais[1].area['total'] + ` Km² | Continente: `+ infoPais[1].localizacao.regiao.nome + ` | Capital: ` + infoPais[1].governo.capital.nome +` </p> </div>` );
 
-        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-2'] + `</h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
+        infoDiv2.insertAdjacentHTML('beforeend', `<div class="ms-5" id = "info_pais2"> <h1>`+ infoPais[0].nome['abreviado'] + ` ` + infoPais[0].id['ISO-3166-1-ALPHA-2'] + ` <img id="imgPais2" class="bandeira" src="" alt="" srcset=""> </h1> <p> Área Total: ` + infoPais[0].area['total'] + ` Km² | Continente: `+ infoPais[0].localizacao.regiao.nome + ` | Capital: ` + infoPais[0].governo.capital.nome +` </p> </div>`);
         
         resultado.insertAdjacentHTML('beforeend', '<div id="graficoTotaldoPib" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
 
         resultado.insertAdjacentHTML('beforeend', '<div id="graficoInvestimentosemPesquisaeDesenvolvimento" class="grafico container-fluid justify-content-center" > País não possui dados </div>');
 
-        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > País não possui dados </div>');  
+        resultado.insertAdjacentHTML('beforeend', '<div id="graficoGastosComEducacao" class="grafico container-fluid justify-content-center" > País não possui dados </div>'); 
        
     }
-    
-    // google.charts.setOnLoadCallback(drawVisualizationIPD);
-    // google.charts.setOnLoadCallback(drawVisualizationGastosComEducacao);
-    // google.charts.setOnLoadCallback(drawVisualizationPIB);
-   
+  
 }
 
 function verificaresultado(){
     var x = document.getElementById('resultado').childElementCount;
-    printConsole('delete');
     document.getElementById("resultado").remove()
-    //printConsole('deletei');
     var main = document.getElementById('main');
     main.insertAdjacentHTML('beforeend', '<div class="resultado h-auto justify-content-center" id="resultado"></div>')   
 }
@@ -290,9 +296,6 @@ function dadosGrafico(value){
             dadosListaGastosComEducacao[5] = [tratandoDado(dadosJSON[0].series[0].serie[48][2020])];
         }else{
             
-            // for(let i = 0; i < 6; i++){           
-            //     dadosListaGastosComEducacao[i] = [0];                         
-            // }
             dadosListaGastosComEducacao[0] = [0];
             dadosListaGastosComEducacao[1] = [0];
             dadosListaGastosComEducacao[2] = [0];
@@ -309,9 +312,7 @@ function dadosGrafico(value){
             dadosListaIPD[4] = [tratandoDado(dadosJSON[1].series[0].serie[39][2015])];
             dadosListaIPD[5] = [tratandoDado(dadosJSON[1].series[0].serie[48][2020])];
         }else{
-            // for(let i = 0; i < 6; i++){
-            //     dadosListaIPD[i] = [0];
-            // }
+
             dadosListaIPD[0] = [0];
             dadosListaIPD[1] = [0];
             dadosListaIPD[2] = [0];
@@ -328,9 +329,7 @@ function dadosGrafico(value){
             dadosListaPIB[4] = [tratandoDado(dadosJSON[2].series[0].serie[39][2015])];
             dadosListaPIB[5] = [tratandoDado(dadosJSON[2].series[0].serie[48][2020])];
         }else{
-            // for(let i = 0; i < 6; i++){
-            //     dadosListaPIB[i] = [0];
-            // }
+
             dadosListaPIB[0] = [0];
             dadosListaPIB[1] = [0];
             dadosListaPIB[2] = [0];
@@ -338,6 +337,7 @@ function dadosGrafico(value){
             dadosListaPIB[4] = [0];
             dadosListaPIB[5] = [0];
         }
+        xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais1));
     }
     else if(controle == 2){
         verificarOrdemDadosPaises();
@@ -436,13 +436,14 @@ function dadosGrafico(value){
             dadosListaPIB[4] = [0, 0];
             dadosListaPIB[5] = [0, 0];
         }
+        xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais2));
+        xhttpAssincronoBandeira(bandeiraPais2, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais1));
     }
 
-    printConsole('tratou todos os dados')
-    criarGrafico()
+    criarGrafico();
 }
 function criarGrafico(){
-    printConsole('vai criar o gráfico')
+
     google.charts.setOnLoadCallback(drawVisualizationIPD);
     google.charts.setOnLoadCallback(drawVisualizationGastosComEducacao);
     google.charts.setOnLoadCallback(drawVisualizationPIB);
@@ -463,7 +464,6 @@ function printConsole(value1){
 }
 
 function drawVisualizationGastosComEducacao() {
-    printConsole("dentro da chamada " + controle);
     //Some raw data (not necessarily accurate)
     var data;
     if(controle == 1){
