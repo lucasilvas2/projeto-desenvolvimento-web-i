@@ -1,7 +1,10 @@
 //Api de busca de imagem é um acesso gratuito
-//Tem um limitação de 3 requisições por segundo
+//Tem um limite de 3 requisições por segundo
 //Alterações mais rápidas que esse tempo provoca problema de carregamento da página
-//Itenção é utilizar a api apenas como teste
+//Intenção é utilizar a api apenas como teste
+//Ao utilizar a verificação de 2 países utilizo duas requisições simultâneas
+//Provocando ainda mais problema nas interações realizadas de forma rápida
+
 function xhttpAssincronoBandeira(callBackFunction, pais) {
     const data = null;
 
@@ -337,7 +340,7 @@ function dadosGrafico(value){
             dadosListaPIB[4] = [0];
             dadosListaPIB[5] = [0];
         }
-        xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais1));
+        //xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais1));
     }
     else if(controle == 2){
         verificarOrdemDadosPaises();
@@ -436,8 +439,8 @@ function dadosGrafico(value){
             dadosListaPIB[4] = [0, 0];
             dadosListaPIB[5] = [0, 0];
         }
-        xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais2));
-        xhttpAssincronoBandeira(bandeiraPais2, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais1));
+        xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(infoPais[1].id['ISO-3166-1-ALPHA-2']));
+        xhttpAssincronoBandeira(bandeiraPais2, retornaNomeAbreviadoComparandoOCodeAlpha2(infoPais[0].id['ISO-3166-1-ALPHA-2']));
     }
 
     criarGrafico();
