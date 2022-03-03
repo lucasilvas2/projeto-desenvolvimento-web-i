@@ -26,13 +26,13 @@ function xhttpAssincronoBandeira(callBackFunction, pais) {
 
 function bandeiraPais1(value){
     var dadobandeira = JSON.parse(value);
-    var bandeiraLink = dadobandeira.value[0]["contentUrl"];
+    var bandeiraLink = dadobandeira.value[1]["contentUrl"];
     var imgPais1 = document.getElementById('imgPais1');
     imgPais1.src = bandeiraLink;
 }
 function bandeiraPais2(value){
     var dadobandeira = JSON.parse(value);
-    var bandeiraLink = dadobandeira.value[0]["contentUrl"];
+    var bandeiraLink = dadobandeira.value[1]["contentUrl"];
     var imgPais2 = document.getElementById('imgPais2');
     imgPais2.src = bandeiraLink;
 }
