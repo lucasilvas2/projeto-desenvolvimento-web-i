@@ -340,7 +340,7 @@ function dadosGrafico(value){
             dadosListaPIB[4] = [0];
             dadosListaPIB[5] = [0];
         }
-        //xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais1));
+        xhttpAssincronoBandeira(bandeiraPais1, retornaNomeAbreviadoComparandoOCodeAlpha2(codePais1));
     }
     else if(controle == 2){
         verificarOrdemDadosPaises();
